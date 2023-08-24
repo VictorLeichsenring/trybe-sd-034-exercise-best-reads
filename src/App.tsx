@@ -5,15 +5,24 @@ import BookList from './components/BookList';
 import data from './data.json';
 import { BookListType } from './types';
 
-const bookIndexStart = 10;
-const bookIndexEnd = 15;
-const placeHolderList = data.slice(bookIndexStart, bookIndexEnd); // esse código deverá ser excluído após a implementação do requisito 2
+// const bookIndexStart = 10;
+// const bookIndexEnd = 15;
+// const placeHolderList = data.slice(bookIndexStart, bookIndexEnd); // esse código deverá ser excluído após a implementação do requisito 2
+
+type CurrentListType = 'wishList' | 'readingList' | 'readList';
 
 function App() {
   const [indexBook, setIndexBook] = useState(0);
   const [wishList, setWishList] = useState<BookListType>([]);
   const [readingList, setReadingList] = useState<BookListType>([]);
   const [readList, setReadList] = useState<BookListType>([]);
+  const [currentList, setCurrentList] = useState<CurrentListType>('wishList');
+
+  const lists = {
+    wishList,
+    readingList,
+    readList,
+  };
 
   function handleButtonNextBook() {
     if (indexBook + 1 < data.length) {
@@ -48,12 +57,18 @@ function App() {
       </div>
 
       <div className="list-buttons">
-        <button>Exibir lista de desejos</button>
-        <button>Exibir lista de leitura</button>
-        <button>Exibir lista de lidos</button>
+        <button onClick={ () => setCurrentList('wishList') }>
+          Exibir lista de desejos
+        </button>
+        <button onClick={ () => setCurrentList('readingList') }>
+          Exibir lista de leitura
+        </button>
+        <button onClick={ () => setCurrentList('readList') }>
+          Exibir lista de lidos
+        </button>
       </div>
       <h1>Lista de ...</h1>
-      <BookList books={ wishList } />
+      <BookList books={ lists[currentList] } />
     </div>
   );
 }
